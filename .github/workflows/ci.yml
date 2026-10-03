@@ -1,0 +1,40 @@
+name: LogiTrack CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build Auth Service
+        working-directory: auth-service
+        run: mvn clean test
+
+      - name: Build Shipment Service
+        working-directory: shipment-service
+        run: mvn clean test
+
+      - name: Build Notification Service
+        working-directory: notification-service
+        run: mvn clean test
+
+      - name: Build API Gateway
+        working-directory: api-gateway
+        run: mvn clean test
