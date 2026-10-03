@@ -1,4 +1,4 @@
-package com.logitack.api_gateway.service;
+package com.logitrack.api_gateway.service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;

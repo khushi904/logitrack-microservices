@@ -1,7 +1,7 @@
 
-package com.logitack.api_gateway.filter;
+package com.logitrack.api_gateway.filter;
 
-import com.logitack.api_gateway.service.JwtService;
+import com.logitrack.api_gateway.service.JwtService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
