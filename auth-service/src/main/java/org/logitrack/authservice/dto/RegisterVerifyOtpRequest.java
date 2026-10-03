@@ -1,15 +1,14 @@
 package org.logitrack.authservice.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-public class VerifyOtpRequest {
+public class RegisterVerifyOtpRequest {
 
     @NotBlank(message = "Email is required")
     @Email(message = "Email must be valid")
     private String email;
-    private String name;
 
     @NotBlank(message = "OTP is required")
     @Pattern(
@@ -18,7 +17,17 @@ public class VerifyOtpRequest {
     )
     private String otp;
 
-    public VerifyOtpRequest() {
+    @NotBlank(message = "Name is required")
+    private String name;
+
+    @NotBlank(message = "Phone number is required")
+    @Pattern(
+            regexp = "^[6-9]\\d{9}$",
+            message = "Phone number must be a valid 10-digit Indian mobile number"
+    )
+    private String phoneNumber;
+
+    public RegisterVerifyOtpRequest() {
     }
 
     public String getEmail() {
@@ -29,6 +38,14 @@ public class VerifyOtpRequest {
         this.email = email;
     }
 
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
+
     public String getName() {
         return name;
     }
@@ -37,11 +54,11 @@ public class VerifyOtpRequest {
         this.name = name;
     }
 
-    public String getOtp() {
-        return otp;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setOtp(String otp) {
-        this.otp = otp;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

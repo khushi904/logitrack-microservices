@@ -3,7 +3,8 @@ package org.logitrack.authservice.controller;
 
 import jakarta.validation.Valid;
 import org.logitrack.authservice.dto.SendOtpRequest;
-import org.logitrack.authservice.dto.VerifyOtpRequest;
+import org.logitrack.authservice.dto.RegisterVerifyOtpRequest;
+import org.logitrack.authservice.dto.LoginVerifyOtpRequest;
 import org.logitrack.authservice.model.User;
 import org.logitrack.authservice.service.JwtService;
 import org.logitrack.authservice.service.OtpService;
@@ -31,12 +32,6 @@ public class AuthController {
     public ResponseEntity<Map<String, String>> sendOtp(
             @Valid @RequestBody SendOtpRequest request) {
 
-        userService.createOrUpdateUser(
-                request.getEmail(),
-                request.getName(),
-                request.getPhoneNumber()
-        );
-
         otpService.generateAndSaveOtp(request.getEmail());
 
         return ResponseEntity.ok(
@@ -46,9 +41,38 @@ public class AuthController {
         );
     }
 
-    @PostMapping("/verify-otp")
-    public ResponseEntity<Map<String, String>> verifyOtp(
-            @Valid @RequestBody VerifyOtpRequest request) {
+    @PostMapping("/register/verify-otp")
+    public ResponseEntity<Map<String, String>> registerVerifyOtp(
+            @Valid @RequestBody RegisterVerifyOtpRequest request) {
+
+        otpService.verifyOtp(
+                request.getEmail(),
+                request.getOtp()
+        );
+
+        userService.createOrUpdateUser(
+                request.getEmail(),
+                request.getName(),
+                request.getPhoneNumber()
+        );
+
+        User user = userService.findOrCreateUser(
+                request.getEmail()
+        );
+
+        String token = jwtService.generateToken(user);
+
+        return ResponseEntity.ok(
+                Map.of(
+                        "message", "Registration successful",
+                        "token", token
+                )
+        );
+    }
+
+    @PostMapping("/login/verify-otp")
+    public ResponseEntity<Map<String, String>> loginVerifyOtp(
+            @Valid @RequestBody LoginVerifyOtpRequest request) {
 
         otpService.verifyOtp(
                 request.getEmail(),
@@ -63,7 +87,7 @@ public class AuthController {
 
         return ResponseEntity.ok(
                 Map.of(
-                        "message", "OTP verified successfully",
+                        "message", "Login successful",
                         "token", token
                 )
         );
