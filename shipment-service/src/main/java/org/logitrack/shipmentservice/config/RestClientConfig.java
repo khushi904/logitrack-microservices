@@ -10,7 +10,7 @@ public class RestClientConfig {
     @Bean
     public RestClient restClient() {
         return RestClient.builder()
-                .baseUrl("http://localhost:8083")
+                .baseUrl(System.getenv().getOrDefault("NOTIFICATION_SERVICE_URL", "http://localhost:8083"))
                 .build();
     }
 }
