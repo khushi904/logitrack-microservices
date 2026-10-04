@@ -12,7 +12,7 @@ public class NotificationClient {
 
     public NotificationClient() {
         this.restClient = RestClient.builder()
-                .baseUrl("http://localhost:8083")
+                .baseUrl(System.getenv().getOrDefault("NOTIFICATION_SERVICE_URL", "http://localhost:8083"))
                 .build();
     }
 
